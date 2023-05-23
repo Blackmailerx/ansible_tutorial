@@ -7,13 +7,35 @@
   - name: update repository index
     apt:
       update_cache: yes
+    when: ansible_distribution in ["Debian", "Ubuntu"]
+    ##Debian or Ubuntu
+    ##ansible all-m gather_facts --limit "karşı ip adres" | grep ansible_distribution
 
   - name: intsall apache2 package
     apt:
       name: apache2
       state: latest
+    when: ansible_distribution == "Ubuntu"
 
   - name: add php supprt for apache
     apt:
       name: libapache2-mod-php
       state: latest
+    when: ansible_distribution == "Ubuntu"
+
+  - name: update repository index
+    dnf:
+      update_cache: yes
+    when: ansible_distribution_version == "CentOS"
+
+  - name: intsall apache2 package
+    dnf:
+      name: httpd
+      state: latest
+    when: ansible_distribution == "Centos"
+
+  - name: add php supprt for apache
+    dnf:
+      name: php
+      state: latest
+    when: ansible_distribution == "Centos"
